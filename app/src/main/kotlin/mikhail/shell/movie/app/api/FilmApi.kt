@@ -7,5 +7,5 @@ import retrofit2.http.GET
 
 interface FilmApi {
     @GET("/sequeniatesttask/films.json")
-    fun getAllFilms(): Call<Map<String, List<Film>>>
+    fun getAllFilms(): Call<Map<String, MutableList<Film>>>
 }

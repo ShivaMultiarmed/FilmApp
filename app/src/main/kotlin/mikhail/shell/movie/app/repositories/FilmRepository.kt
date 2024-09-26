@@ -16,7 +16,7 @@ class FilmRepository {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val api = retrofit.create(FilmApi::class.java)
-    suspend fun getAllFilms(): List<Film>?
+    suspend fun getAllFilms(): MutableList<Film>?
     {
         val response = api.getAllFilms().awaitResponse()
         if (response.code() == 200 && response.body() != null)

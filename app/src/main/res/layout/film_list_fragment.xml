@@ -5,6 +5,7 @@
     android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/film_list_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -42,6 +43,10 @@
                 android:text="@string/film_container_title"
                 android:textColor="@color/black"/>
         </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/films_recycler_veiw"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
     </LinearLayout>
 
 </ScrollView>

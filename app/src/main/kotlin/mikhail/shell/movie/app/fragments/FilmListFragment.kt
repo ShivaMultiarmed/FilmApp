@@ -1,5 +1,7 @@
 package mikhail.shell.movie.app.fragments
 
+import adapters.FilmListAdapter
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,27 +10,35 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import mikhail.shell.movie.app.R
 import mikhail.shell.movie.app.models.Film
 
 class FilmListFragment: Fragment() {
+    private var pendingFilms: List<Film>? = null
+    private lateinit var adapter: FilmListAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.film_list_fragment, container, false)
     }
-    fun addFilm(film: Film){
-        Log.i("Film List Fragment", film.name)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.films_recycler_veiw)
+        adapter = FilmListAdapter(activity as Activity)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = GridLayoutManager(activity, 2)
+        pendingFilms?.let {
+            adapter.films = it
+            pendingFilms = null
+        }
     }
-    fun createFilmCard(film: Film): View
+    fun setFilms(films: List<Film>?)
     {
-        val filmCard = layoutInflater.inflate(R.layout.film_card, null)
-        val poster = filmCard.findViewById<ImageView>(R.id.film_poster)
-        Picasso.with(activity)
-            .load(film.image_url)
-            .resizeDimen(poster.id,poster.id)
-            .into(poster)
-        val name = filmCard.findViewById<TextView>(R.id.film_name)
-        name.text = film.name
-        return filmCard
+        if (::adapter.isInitialized) {
+            adapter.films = films
+        } else {
+            pendingFilms = films
+        }
     }
 }

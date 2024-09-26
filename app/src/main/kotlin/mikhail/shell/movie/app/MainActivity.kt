@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mikhail.shell.movie.app.databinding.MainActivityBinding
@@ -44,15 +45,18 @@ class MainActivity: AppCompatActivity() {
     private fun requestAllFilms()
     {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.requestAllFilms()
-            val allFilms = viewModel.getAllFilms()
+            val allFilms = viewModel.requestAllFilms()
             if (allFilms != null)
+            {
+                val allGenres = viewModel.fetchGenres()
                 withContext(Dispatchers.Main)
                 {
                     val filmListFragment = FilmListFragment()
                     openFragment(filmListFragment)
-                    allFilms.forEach(filmListFragment::addFilm)
+                    filmListFragment.setFilms(allFilms)
+                    //allGenres?.forEach { genre ->  Log.i(TAG, genre) }
                 }
+            }
         }
     }
 }
