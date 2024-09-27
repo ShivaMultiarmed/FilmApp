@@ -30,10 +30,9 @@ class FilmListAdapter(val activity: Activity) : RecyclerView.Adapter<FilmListAda
         val poster = filmCard.findViewById<ImageView>(R.id.film_poster)
         Picasso.with(activity)
             .load(film?.image_url)
-            //.resizeDimen(300,300)
             .into(poster)
         val name = filmCard.findViewById<TextView>(R.id.film_name)
-        name.text = film?.name
+        name.text = film?.localized_name
     }
 
     override fun getItemCount() = films?.count() as Int

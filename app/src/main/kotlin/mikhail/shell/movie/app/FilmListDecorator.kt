@@ -15,10 +15,10 @@ class FilmListDecorator(
     private val coeff: Double = 1.0)
                                         : ItemDecoration() {
 
-    private val topSpacing: Int = (coeff * topSpacing).toInt()
-    private val leftSpacing: Int = (coeff * leftSpacing).toInt()
-    private val rightSpacing: Int = (coeff * rightSpacing).toInt()
-    private val bottomSpacing: Int = (coeff * bottomSpacing).toInt()
+    private val topSpacing = (coeff * topSpacing).toInt()
+    private val leftSpacing = (coeff * leftSpacing).toInt()
+    private val rightSpacing = (coeff * rightSpacing).toInt()
+    private val bottomSpacing = (coeff * bottomSpacing).toInt()
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val position = parent.getChildAdapterPosition(view)

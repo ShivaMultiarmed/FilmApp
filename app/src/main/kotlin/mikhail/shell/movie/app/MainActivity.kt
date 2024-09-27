@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +26,7 @@ class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         B = MainActivityBinding.inflate(layoutInflater)
-        setContentView(R.layout.main_activity)
+        setContentView(B.root)
         viewModel = ViewModelProvider(this).get(FilmViewModel::class.java)
         openFragment(LoadingFragment(), false)
         requestAllFilms()
@@ -48,13 +49,11 @@ class MainActivity: AppCompatActivity() {
             val allFilms = viewModel.requestAllFilms()
             if (allFilms != null)
             {
-                val allGenres = viewModel.fetchGenres()
+                val allGenres = viewModel.fetchGenres() as List<String>
                 withContext(Dispatchers.Main)
                 {
-                    val filmListFragment = FilmListFragment()
+                    val filmListFragment = FilmListFragment(allGenres, allFilms)
                     openFragment(filmListFragment)
-                    filmListFragment.setFilms(allFilms)
-                    //allGenres?.forEach { genre ->  Log.i(TAG, genre) }
                 }
             }
         }
