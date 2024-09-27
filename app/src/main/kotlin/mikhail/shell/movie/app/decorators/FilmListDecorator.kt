@@ -1,4 +1,4 @@
-package mikhail.shell.movie.app
+package mikhail.shell.movie.app.decorators
 
 import android.graphics.Rect
 import android.view.View

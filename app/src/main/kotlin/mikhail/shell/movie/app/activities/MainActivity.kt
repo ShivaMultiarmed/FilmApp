@@ -1,24 +1,17 @@
-package mikhail.shell.movie.app
+package mikhail.shell.movie.app.activities
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mikhail.shell.movie.app.databinding.MainActivityBinding
 import mikhail.shell.movie.app.fragments.FilmListFragment
 import mikhail.shell.movie.app.fragments.LoadingFragment
-import mikhail.shell.movie.app.models.Film
 import mikhail.shell.movie.app.viewmodels.FilmViewModel
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity: AppCompatActivity() {
@@ -45,6 +38,9 @@ class MainActivity: AppCompatActivity() {
     private fun requestAllFilms()
     {
         lifecycleScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                loadingFragment.setProgressBarEnabled(true)
+            }
             val allFilms = viewModel.requestAllFilms()
             if (allFilms != null)
             {

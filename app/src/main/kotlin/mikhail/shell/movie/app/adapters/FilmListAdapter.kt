@@ -6,12 +6,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutParams
+import androidx.recyclerview.widget.RecyclerView.LayoutParams.MATCH_PARENT
+import androidx.recyclerview.widget.RecyclerView.LayoutParams.WRAP_CONTENT
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.squareup.picasso.Picasso
 import mikhail.shell.movie.app.R
 import mikhail.shell.movie.app.models.Film
+import mikhail.shell.movie.app.views.FilmCardView
 
-class FilmListAdapter(val activity: Activity) : RecyclerView.Adapter<FilmListAdapter.FilmCardHolder>() {
+class FilmListAdapter(private val activity: Activity, private val onClickListener: View.OnClickListener) : RecyclerView.Adapter<FilmListAdapter.FilmCardHolder>() {
 
     var films: List<Film>? = null
         set(value) {
@@ -20,22 +24,18 @@ class FilmListAdapter(val activity: Activity) : RecyclerView.Adapter<FilmListAda
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmCardHolder {
-        val filmCard = activity.layoutInflater.inflate(R.layout.film_card, null)
+        val filmCard = FilmCardView(activity)
+        filmCard.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
         return FilmCardHolder(filmCard)
     }
 
     override fun onBindViewHolder(holder: FilmCardHolder, position: Int) {
         val film = films?.get(position)
-        val filmCard = holder.filmCard
-        val poster = filmCard.findViewById<ImageView>(R.id.film_poster)
-        Picasso.with(activity)
-            .load(film?.image_url)
-            .into(poster)
-        val name = filmCard.findViewById<TextView>(R.id.film_name)
-        name.text = film?.localized_name
+        val filmCard = holder.filmCard.setFilm(film as Film)
+        holder.filmCard.setOnClickListener(onClickListener)
     }
 
     override fun getItemCount() = films?.count() as Int
 
-    class FilmCardHolder(val filmCard: View) : ViewHolder(filmCard)
+    class FilmCardHolder(val filmCard: FilmCardView) : ViewHolder(filmCard)
 }

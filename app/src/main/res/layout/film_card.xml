@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout>
+    <data>
+        <variable
+            name="film"
+            type="mikhail.shell.movie.app.models.Film" />
+    </data>
+    <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="270dp"
@@ -19,9 +25,10 @@
         android:paddingTop="8dp"
         android:paddingBottom="2dp"
         android:textSize="16sp"
-        android:text="Название"
+        android:text="@{film.localized_name}"
         android:textColor="@color/black"
         android:fontFamily="@font/roboto_bold"
         android:maxLines="2"
         android:ellipsize="end"/>
-</LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,5 +1,7 @@
 package mikhail.shell.movie.app.models
 
+import java.io.Serializable
+
 data class Film(val id: Long,
                 val localized_name: String,
                 val name: String,
@@ -8,4 +10,4 @@ data class Film(val id: Long,
                 val image_url: String,
                 val description: String,
                 val genres: List<String>
-                )
+                ) : Serializable

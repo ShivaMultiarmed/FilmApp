@@ -2,30 +2,23 @@ package mikhail.shell.movie.app.fragments
 
 import mikhail.shell.movie.app.adapters.FilmListAdapter
 import android.app.Activity
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore.Audio.Radio
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.get
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import mikhail.shell.movie.app.FilmListDecorator
+import mikhail.shell.movie.app.decorators.FilmListDecorator
 import mikhail.shell.movie.app.R
+import mikhail.shell.movie.app.activities.MainActivity
 import mikhail.shell.movie.app.databinding.FilmListFragmentBinding
 import mikhail.shell.movie.app.models.Film
+import mikhail.shell.movie.app.views.FilmCardView
 
 class FilmListFragment(private val genres: List<String>, private val films: List<Film>): Fragment() {
     private lateinit var adapter: FilmListAdapter
@@ -37,7 +30,10 @@ class FilmListFragment(private val genres: List<String>, private val films: List
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = FilmListAdapter(activity as Activity)
+        adapter = FilmListAdapter(activity as Activity) { card ->
+            val filmCard = card as FilmCardView
+            openFilm(filmCard.getFilm() as Film)
+        }
         B.filmsRecyclerVeiw.adapter = adapter
         B.filmsRecyclerVeiw.layoutManager = GridLayoutManager(activity, 2)
         val coeff = getDpToPxCoefficient()
@@ -72,4 +68,11 @@ class FilmListFragment(private val genres: List<String>, private val films: List
     private fun filterFilmsByGenre(genre: String) = getAllFilms().filter { film -> film.genres.contains(genre.toLowerCase()) }
     private fun getAllFilms() = films.sortedWith { m1, m2 -> m1.localized_name.compareTo(m2.localized_name) }
     private fun getAllGenres() = genres.sortedWith { g1, g2 -> g1.compareTo(g2) }.map(String::capitalize)
+    private fun openFilm(film: Film)  {
+        val intent = Intent(activity, MainActivity::class.java)
+        val b = Bundle()
+        b.putSerializable("film", film)
+        intent.putExtras(b)
+        startActivity(intent)
+    }
 }

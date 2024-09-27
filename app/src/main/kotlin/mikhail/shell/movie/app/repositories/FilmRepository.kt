@@ -22,12 +22,11 @@ class FilmRepository {
             val response = api.getAllFilms()
             if (response.isSuccessful) {
                 val body = response.body()
-                body?.get("films") as? MutableList<Film> // Safely cast the response to the expected type
+                body?.get("films") as? MutableList<Film>
             } else {
-                null // Handle non-2xx responses here
+                null
             }
         } catch (e: Exception) {
-            // Catch all exceptions, including network errors
             null
         }
     }
