@@ -20,7 +20,7 @@ import mikhail.shell.movie.app.databinding.FilmListFragmentBinding
 import mikhail.shell.movie.app.models.Film
 import mikhail.shell.movie.app.views.FilmCardView
 
-class FilmListFragment(private val genres: List<String>, private val films: List<Film>): Fragment() {
+class FilmListFragment(private val genres: List<String>, private val films: List<Film>, private val openFilmListener: View.OnClickListener): Fragment() {
     private lateinit var adapter: FilmListAdapter
     private lateinit var B: FilmListFragmentBinding
     private var currentGenre: String? = null
@@ -30,10 +30,7 @@ class FilmListFragment(private val genres: List<String>, private val films: List
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = FilmListAdapter(activity as Activity) { card ->
-            val filmCard = card as FilmCardView
-            openFilm(filmCard.getFilm() as Film)
-        }
+        adapter = FilmListAdapter(activity as Activity, openFilmListener)
         B.filmsRecyclerVeiw.adapter = adapter
         B.filmsRecyclerVeiw.layoutManager = GridLayoutManager(activity, 2)
         val coeff = getDpToPxCoefficient()

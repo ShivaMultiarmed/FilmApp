@@ -13,6 +13,9 @@ import mikhail.shell.movie.app.fragments.FilmListFragment
 import mikhail.shell.movie.app.fragments.LoadingFragment
 import mikhail.shell.movie.app.viewmodels.FilmViewModel
 import com.google.android.material.snackbar.Snackbar
+import mikhail.shell.movie.app.fragments.FilmFragment
+import mikhail.shell.movie.app.models.Film
+import mikhail.shell.movie.app.views.FilmCardView
 
 class MainActivity: AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -47,7 +50,11 @@ class MainActivity: AppCompatActivity() {
                 val allGenres = viewModel.fetchGenres() as List<String>
                 withContext(Dispatchers.Main)
                 {
-                    val filmListFragment = FilmListFragment(allGenres, allFilms)
+                    val filmListFragment = FilmListFragment(allGenres, allFilms){ card ->
+                        val filmCardView = card as FilmCardView
+                        val film = filmCardView.getFilm()
+                        openFragment(FilmFragment(film as Film))
+                    }
                     openFragment(filmListFragment)
                 }
             }
