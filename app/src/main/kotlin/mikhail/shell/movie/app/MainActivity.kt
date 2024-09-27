@@ -6,6 +6,7 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -17,31 +18,29 @@ import mikhail.shell.movie.app.fragments.FilmListFragment
 import mikhail.shell.movie.app.fragments.LoadingFragment
 import mikhail.shell.movie.app.models.Film
 import mikhail.shell.movie.app.viewmodels.FilmViewModel
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity: AppCompatActivity() {
     private val TAG = "MainActivity"
     private lateinit var viewModel: FilmViewModel
     private lateinit var B: MainActivityBinding
-
+    private lateinit var loadingFragment: LoadingFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         B = MainActivityBinding.inflate(layoutInflater)
         setContentView(B.root)
         viewModel = ViewModelProvider(this).get(FilmViewModel::class.java)
-        openFragment(LoadingFragment(), false)
+        loadingFragment = LoadingFragment()
+        openFragment(loadingFragment, false)
         requestAllFilms()
     }
     private fun openFragment(fragment: Fragment, addToBackStack: Boolean = true)
     {
         val transaction = supportFragmentManager.beginTransaction().replace(B.mainContainer.id, fragment)
-        if (addToBackStack)
+        if (!addToBackStack)
             transaction.addToBackStack(null)
         transaction.commit()
-    }
-    private fun goToPreviousFragment()
-    {
-        if (supportFragmentManager.backStackEntryCount > 0)
-            supportFragmentManager.popBackStack()
     }
     private fun requestAllFilms()
     {
@@ -56,6 +55,17 @@ class MainActivity: AppCompatActivity() {
                     openFragment(filmListFragment)
                 }
             }
+            else
+            {
+                withContext(Dispatchers.Main) {
+                    loadingFragment.setProgressBarEnabled(false)
+                    loadingFragment.view?.let {
+                        Snackbar.make(it, "Ошибка при подлючении к Интернету.",Snackbar.LENGTH_LONG)
+                            .setAction("Повторить"){ requestAllFilms() }
+                    }?.show()
+                }
+            }
+
         }
     }
 }

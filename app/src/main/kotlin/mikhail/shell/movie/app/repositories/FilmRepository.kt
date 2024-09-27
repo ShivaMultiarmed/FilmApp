@@ -4,6 +4,7 @@ package mikhail.shell.movie.app.repositories
 import mikhail.shell.movie.app.api.FilmApi
 import mikhail.shell.movie.app.models.Film
 import okhttp3.OkHttpClient
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,14 +17,18 @@ class FilmRepository {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val api = retrofit.create(FilmApi::class.java)
-    suspend fun getAllFilms(): MutableList<Film>?
-    {
-        val response = api.getAllFilms().awaitResponse()
-        if (response.code() == 200 && response.body() != null)
-        {
-            val films = response.body()!!.getOrDefault("films", null)
-            return films
+    suspend fun getAllFilms(): MutableList<Film>? {
+        return try {
+            val response = api.getAllFilms()
+            if (response.isSuccessful) {
+                val body = response.body()
+                body?.get("films") as? MutableList<Film> // Safely cast the response to the expected type
+            } else {
+                null // Handle non-2xx responses here
+            }
+        } catch (e: Exception) {
+            // Catch all exceptions, including network errors
+            null
         }
-        return null
     }
 }
