@@ -1,4 +1,4 @@
-package adapters
+package mikhail.shell.movie.app.adapters
 
 import android.app.Activity
 import android.view.View

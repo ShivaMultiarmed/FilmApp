@@ -44,9 +44,11 @@
                 android:textColor="@color/black"/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
             android:id="@+id/films_recycler_veiw"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"/>
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="8dp"/>
     </LinearLayout>
 
 </ScrollView>
