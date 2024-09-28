@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp">
+            android:paddingHorizontal="16dp"
+            android:background="?attr/colorSurface">
 
             <ImageView
                 android:id="@+id/one_film_poster"
@@ -32,9 +33,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_bold"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="26sp"
-                android:text="@{film.localized_name}"/>
+                android:text="@{film.localized_name}" />
 
             <TextView
                 android:id="@+id/genres_and_year"
@@ -75,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:fontFamily="@font/roboto_regular"
-                android:textColor="#000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 android:text="@{film.description}"
                 android:lineHeight="20sp"/>
