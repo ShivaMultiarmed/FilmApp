@@ -30,8 +30,8 @@ class FilmListAdapter(private val activity: Activity, private val onClickListene
     }
 
     override fun onBindViewHolder(holder: FilmCardHolder, position: Int) {
-        val film = films?.get(position)
-        val filmCard = holder.filmCard.setFilm(film as Film)
+        val film = films?.get(position) as Film
+        holder.filmCard.setFilm(film)
         holder.filmCard.setOnClickListener(onClickListener)
     }
 

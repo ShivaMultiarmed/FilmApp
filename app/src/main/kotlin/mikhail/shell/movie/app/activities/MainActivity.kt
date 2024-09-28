@@ -52,8 +52,8 @@ class MainActivity: AppCompatActivity() {
                 {
                     val filmListFragment = FilmListFragment(allGenres, allFilms){ card ->
                         val filmCardView = card as FilmCardView
-                        val film = filmCardView.getFilm()
-                        openFragment(FilmFragment(film as Film))
+                        val film = filmCardView.getFilm() as Film
+                        openFragment(FilmFragment(film))
                     }
                     openFragment(filmListFragment)
                 }

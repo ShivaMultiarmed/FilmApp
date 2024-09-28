@@ -3,6 +3,7 @@ package mikhail.shell.movie.app.views
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.squareup.picasso.Picasso
 import mikhail.shell.movie.app.databinding.FilmCardBinding
@@ -15,6 +16,7 @@ class FilmCardView(context: Context?, attributeSet: AttributeSet?) : LinearLayou
     init {
         val inflater = (context as Activity).layoutInflater
         B = FilmCardBinding.inflate(inflater, this, true)
+        layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 270)
     }
 
     constructor(context: Context?) : this (context, null)

@@ -3,4 +3,5 @@
     <string name="film_list_title">Фильмы</string>
     <string name="genres_title">Жанры</string>
     <string name="film_container_title">Фильмы</string>
+    <string name="kinopoisk">КиноПоиск</string>
 </resources>
