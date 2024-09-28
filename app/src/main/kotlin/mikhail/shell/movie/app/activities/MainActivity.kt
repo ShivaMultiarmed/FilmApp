@@ -1,6 +1,7 @@
 package mikhail.shell.movie.app.activities
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -24,7 +25,6 @@ import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class MainActivity: AppCompatActivity() {
-    private val TAG = "MainActivity"
     private lateinit var viewModel: FilmViewModel
     private lateinit var B: MainActivityBinding
     private lateinit var loadingFragment: LoadingFragment
@@ -83,8 +83,12 @@ class MainActivity: AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     loadingFragment.setProgressBarEnabled(false)
                     loadingFragment.view?.let {
-                        Snackbar.make(it, "Ошибка подключения сите",Snackbar.LENGTH_LONG)
+                        val colorData = TypedValue()
+                        theme.resolveAttribute(androidx.appcompat.R.attr.colorAccent, colorData, true)
+                        val color = colorData.data
+                        Snackbar.make(it, "Ошибка подключения сите",Snackbar.LENGTH_INDEFINITE)
                             .setAction("Повторить"){ requestAllFilms() }
+                            .setActionTextColor(color)
                     }?.show()
                 }
             }
