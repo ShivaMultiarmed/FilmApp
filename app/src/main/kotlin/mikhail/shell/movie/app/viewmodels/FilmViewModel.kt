@@ -1,18 +1,16 @@
 package mikhail.shell.movie.app.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import mikhail.shell.movie.app.models.Film
 import mikhail.shell.movie.app.repositories.FilmRepository
+import mikhail.shell.movie.app.repositories.Repository
 
-class FilmViewModel: ViewModel() {
-    private val repository = FilmRepository()
+class FilmViewModel(private val repository: Repository<Film>): ViewModel() {
     private var films: MutableList<Film>? = null
     private var genres: MutableList<String>? = null
     suspend fun requestAllFilms() : List<Film>? {
         if (films == null)
-            films = repository.getAllFilms()
+            films = repository.getAll()
         return films
     }
     fun fetchGenres(): List<String>?

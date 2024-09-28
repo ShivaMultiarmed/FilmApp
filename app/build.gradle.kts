@@ -54,10 +54,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.6.0")
+
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
     implementation("com.squareup.picasso:picasso:2.5.2")
-    //implementation("androidx.recyclerview:recyclerview:1.4.0-rc01")
+
+    implementation("io.insert-koin:koin-android:3.5.6")
+    //implementation ("io.insert-koin:koin-androidx-navigation:3.2.0-beta-1")
 }

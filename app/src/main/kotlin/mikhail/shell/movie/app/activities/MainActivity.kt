@@ -18,6 +18,8 @@ import mikhail.shell.movie.app.R
 import mikhail.shell.movie.app.fragments.FilmFragment
 import mikhail.shell.movie.app.models.Film
 import mikhail.shell.movie.app.views.FilmCardView
+import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class MainActivity: AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -28,7 +30,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         B = MainActivityBinding.inflate(layoutInflater)
         setContentView(B.root)
-        viewModel = ViewModelProvider(this).get(FilmViewModel::class.java)
+        viewModel = getViewModel<FilmViewModel>()
         loadingFragment = LoadingFragment()
         openFragment(loadingFragment)
         requestAllFilms()

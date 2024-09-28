@@ -1,9 +1,6 @@
 package mikhail.shell.movie.app
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import mikhail.shell.movie.app.repositories.FilmRepository
@@ -27,7 +24,7 @@ class RepositoryTest {
     @Test
     fun testGettingAllFilms() = runBlocking {
         withContext(Dispatchers.IO) {
-            val films = repository.getAllFilms()
+            val films = repository.getAll()
             assertNotNull(films)
         }
     }
