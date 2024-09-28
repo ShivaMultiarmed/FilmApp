@@ -9,35 +9,25 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import mikhail.shell.movie.app.R
+import mikhail.shell.movie.app.databinding.FilmFragmentBinding
 import mikhail.shell.movie.app.models.Film
 import java.math.RoundingMode
 import java.math.RoundingMode.HALF_UP
 
 class FilmFragment(private val film: Film) : Fragment() {
-    private lateinit var poster: ImageView
-    private lateinit var localizedName: TextView
-    private lateinit var genresAndYear: TextView
-    private lateinit var rating: TextView
-    private lateinit var description: TextView
+    private lateinit var B : FilmFragmentBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.film_fragment, container, false)
+        B = FilmFragmentBinding.inflate(inflater)
+        return B.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        poster = view.findViewById(R.id.one_film_poster)
-        localizedName = view.findViewById(R.id.localized_name)
-        genresAndYear = view.findViewById(R.id.genres_and_year)
-        rating = view.findViewById(R.id.rating)
-        description = view.findViewById(R.id.description)
-
-        localizedName.text = film.localized_name
-        genresAndYear.text = createGenresAndYearText()
-        rating.text = film.rating.round().toString()
-        description.text = film.description
+        B.film = film
+        B.genresAndYear.text = createGenresAndYearText()
+        B.rating.text = film.rating.round().toString()
         Picasso.with(activity)
             .load(film.image_url)
-            .into(poster)
+            .into(B.oneFilmPoster)
     }
     private fun createGenresAndYearText(): String
     {

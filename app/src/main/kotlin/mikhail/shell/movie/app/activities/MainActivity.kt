@@ -28,13 +28,13 @@ class MainActivity: AppCompatActivity() {
         setContentView(B.root)
         viewModel = ViewModelProvider(this).get(FilmViewModel::class.java)
         loadingFragment = LoadingFragment()
-        openFragment(loadingFragment, false)
+        openFragment(loadingFragment)
         requestAllFilms()
     }
     private fun openFragment(fragment: Fragment, addToBackStack: Boolean = true)
     {
         val transaction = supportFragmentManager.beginTransaction().replace(B.mainContainer.id, fragment)
-        if (!addToBackStack)
+        if (addToBackStack)
             transaction.addToBackStack(null)
         transaction.commit()
     }
@@ -55,7 +55,7 @@ class MainActivity: AppCompatActivity() {
                         val film = filmCardView.getFilm() as Film
                         openFragment(FilmFragment(film))
                     }
-                    openFragment(filmListFragment)
+                    openFragment(filmListFragment, false)
                 }
             }
             else
