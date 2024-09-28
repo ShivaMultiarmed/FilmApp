@@ -1,6 +1,7 @@
 package mikhail.shell.movie.app.activities
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import mikhail.shell.movie.app.fragments.FilmListFragment
 import mikhail.shell.movie.app.fragments.LoadingFragment
 import mikhail.shell.movie.app.viewmodels.FilmViewModel
 import com.google.android.material.snackbar.Snackbar
+import mikhail.shell.movie.app.R
 import mikhail.shell.movie.app.fragments.FilmFragment
 import mikhail.shell.movie.app.models.Film
 import mikhail.shell.movie.app.views.FilmCardView
@@ -30,6 +32,10 @@ class MainActivity: AppCompatActivity() {
         loadingFragment = LoadingFragment()
         openFragment(loadingFragment)
         requestAllFilms()
+
+        setSupportActionBar(B.appBar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowCustomEnabled(true)
     }
     private fun openFragment(fragment: Fragment, addToBackStack: Boolean = true)
     {
@@ -50,10 +56,14 @@ class MainActivity: AppCompatActivity() {
                 val allGenres = viewModel.fetchGenres() as List<String>
                 withContext(Dispatchers.Main)
                 {
+
                     val filmListFragment = FilmListFragment(allGenres, allFilms){ card ->
                         val filmCardView = card as FilmCardView
                         val film = filmCardView.getFilm() as Film
                         openFragment(FilmFragment(film))
+
+                        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                        B.appBar.navigationIcon?.setTint(resources.getColor(R.color.white))
                     }
                     openFragment(filmListFragment, false)
                 }
@@ -70,5 +80,21 @@ class MainActivity: AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId)
+        {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onBackPressed() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        super.onBackPressed()
     }
 }
