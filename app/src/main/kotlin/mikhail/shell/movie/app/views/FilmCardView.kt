@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso
 import mikhail.shell.movie.app.R
 import mikhail.shell.movie.app.databinding.FilmCardBinding
 import mikhail.shell.movie.app.models.Film
+import java.lang.Exception
 
 class FilmCardView(context: Context?, attributeSet: AttributeSet?) : LinearLayout(context, attributeSet) {
 
@@ -27,17 +28,10 @@ class FilmCardView(context: Context?, attributeSet: AttributeSet?) : LinearLayou
 
     fun setFilm(film: Film) {
         B.film = film
-        Picasso.with(context)
+        Picasso.get()
             .load(film.image_url)
             .error(R.drawable.error_img)
-            .into(B.filmPoster, object : Callback {
-                override fun onSuccess() {}
-
-                override fun onError() {
-                    B.filmPoster.scaleType = ImageView.ScaleType.CENTER
-                }
-
-            })
+            .into(B.filmPoster)
     }
     fun getFilm() = B.film
 

@@ -8,6 +8,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import org.koin.core.context.GlobalContext.get
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -19,7 +20,7 @@ class RepositoryTest {
     @Before
     fun initRepository()
     {
-        repository = FilmRepository()
+        //repository = get<FilmRepository>()
     }
     @Test
     fun testGettingAllFilms() = runBlocking {

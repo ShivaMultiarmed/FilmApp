@@ -25,7 +25,7 @@ class FilmFragment(private val film: Film) : Fragment() {
         B.film = film
         B.genresAndYear.text = createGenresAndYearText()
         B.rating.text = film.rating.round().toString()
-        Picasso.with(activity)
+        Picasso.get()
             .load(film.image_url)
             .into(B.oneFilmPoster)
     }

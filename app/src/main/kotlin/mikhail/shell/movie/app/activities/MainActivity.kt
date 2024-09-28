@@ -14,6 +14,8 @@ import mikhail.shell.movie.app.fragments.FilmListFragment
 import mikhail.shell.movie.app.fragments.LoadingFragment
 import mikhail.shell.movie.app.viewmodels.FilmViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Downloader
+import com.squareup.picasso.Picasso
 import mikhail.shell.movie.app.R
 import mikhail.shell.movie.app.fragments.FilmFragment
 import mikhail.shell.movie.app.models.Film
@@ -34,6 +36,11 @@ class MainActivity: AppCompatActivity() {
         loadingFragment = LoadingFragment()
         openFragment(loadingFragment)
         requestAllFilms()
+
+        val picasso = Picasso.Builder(this)
+            .downloader(get<Downloader>())
+            .build()
+        Picasso.setSingletonInstance(picasso)
 
         setSupportActionBar(B.appBar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -66,6 +73,7 @@ class MainActivity: AppCompatActivity() {
 
                         supportActionBar?.setDisplayHomeAsUpEnabled(true)
                         B.appBar.navigationIcon?.setTint(resources.getColor(R.color.white))
+                        B.headerTitle.text = film.name
                     }
                     openFragment(filmListFragment, false)
                 }
@@ -75,7 +83,7 @@ class MainActivity: AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     loadingFragment.setProgressBarEnabled(false)
                     loadingFragment.view?.let {
-                        Snackbar.make(it, "Ошибка при подлючении к Интернету.",Snackbar.LENGTH_LONG)
+                        Snackbar.make(it, "Ошибка подключения сите",Snackbar.LENGTH_LONG)
                             .setAction("Повторить"){ requestAllFilms() }
                     }?.show()
                 }
@@ -97,6 +105,7 @@ class MainActivity: AppCompatActivity() {
 
     override fun onBackPressed() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        B.headerTitle.text = resources.getString(R.string.film_list_title)
         super.onBackPressed()
     }
 }
