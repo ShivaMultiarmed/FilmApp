@@ -13,7 +13,7 @@ import mikhail.shell.movie.app.views.FilmCardView
 
 class FilmListAdapter(private val context: Context) : RecyclerView.Adapter<FilmListAdapter.FilmCardHolder>() {
 
-    var films: List<Film>? = null
+    var films: MutableList<Film>? = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()

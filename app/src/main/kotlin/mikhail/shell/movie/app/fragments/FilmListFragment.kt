@@ -34,7 +34,7 @@ class FilmListFragment(private val genres: List<String>, private val films: List
         super.onViewCreated(view, savedInstanceState)
         viewModel = getActivityViewModel ()
         setUpRecyclerView()
-        adapter.films = viewModel.getAllFilms()
+        adapter.films?.addAll(viewModel.getAllFilms() as Collection<Film>)
         viewModel.getGenres()?.forEach(::addGenre)
     }
     private fun getDpToPxCoefficient() = context?.resources?.displayMetrics?.density?.toDouble() as Double
@@ -62,9 +62,9 @@ class FilmListFragment(private val genres: List<String>, private val films: List
                 currentGenre = null
             } else
                 currentGenre = newGenre
-            adapter.films =
-                if (currentGenre == null) viewModel.getAllFilms()
-                else viewModel.filterFilmsByGenre(currentGenre as String)
+            val newFilms = if (currentGenre == null) viewModel.getAllFilms()
+                            else viewModel.filterFilmsByGenre(currentGenre as String)
+            adapter.films = newFilms?.toMutableList()
         }
     }
 }

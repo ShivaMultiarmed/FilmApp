@@ -9,7 +9,11 @@ class FilmViewModel(private val repository: Repository<Film>): ViewModel() {
     private var genres: MutableList<String>? = null
     suspend fun requestAllFilms() {
         if (films == null)
-            films = repository.getAll()
+        {
+            val responseResult = repository.getAll()!!
+            if (responseResult.code in 200..299)
+                films = responseResult.payload
+        }
     }
     fun getGenres(): List<String>?
     {
@@ -28,6 +32,6 @@ class FilmViewModel(private val repository: Repository<Film>): ViewModel() {
     }
     fun filterFilmsByGenre(genre: String) = films
         ?.filter { film -> film.genres.contains(genre) }
-        ?.sortedWith{ f1, f2 -> f2.name.compareTo(f1.name) }
+        ?.sortedWith{ f1, f2 -> f2.name.compareTo(f1.name) }?.toList()
     fun getAllFilms() = films?.sortedWith { f1, f2 -> f1.localized_name.compareTo(f2.localized_name) }?.toList()
 }

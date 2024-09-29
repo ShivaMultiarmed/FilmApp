@@ -56,7 +56,7 @@ class MainActivity: AppCompatActivity(), FilmCatalog {
                 if (allFilms == null)
                     displayOnLoadingErrorScreen()
                 else {
-                    val allGenres = viewModel.getGenres() as List<String>
+                    val allGenres = viewModel.getGenres()!!
                     val filmListFragment = FilmListFragment(allGenres, allFilms)
                     openFragment(filmListFragment, false)
                 }
