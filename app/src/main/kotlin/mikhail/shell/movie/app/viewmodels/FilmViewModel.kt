@@ -30,8 +30,7 @@ class FilmViewModel(private val repository: Repository<Film>): ViewModel() {
         }
         return genres?.sortedWith {g1, g2 -> g1.compareTo(g2)}
     }
-    fun filterFilmsByGenre(genre: String) = films
-        ?.filter { film -> film.genres.contains(genre) }
-        ?.sortedWith{ f1, f2 -> f2.name.compareTo(f1.name) }?.toList()
+    fun filterFilmsByGenre(genre: String) = getAllFilms()
+        ?.filter { film -> film.genres.contains(genre) }?.toList()
     fun getAllFilms() = films?.sortedWith { f1, f2 -> f1.localized_name.compareTo(f2.localized_name) }?.toList()
 }
