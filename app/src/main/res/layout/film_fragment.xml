@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
             android:background="?attr/colorSurface">
 
             <ImageView
@@ -34,6 +35,7 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_bold"
                 android:textColor="?attr/colorOnSurface"
+                android:lineHeight="32sp"
                 android:textSize="26sp"
                 android:text="@{film.localized_name}" />
 
@@ -44,7 +46,8 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="#4B4B4B"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:lineHeight="20sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,7 +61,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:textColor="#0E3165"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:lineHeight="28sp"/>
 
                 <TextView
                     android:layout_width="match_parent"

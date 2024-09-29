@@ -13,7 +13,7 @@ class FilmRepository(private val api: FilmApi): Repository<Film> {
             val response = api.getAllFilms()
             if (response.isSuccessful) {
                 val body = response.body()
-                body?.get("films") as? MutableList<Film>
+                body?.get("films")
             } else {
                 null
             }

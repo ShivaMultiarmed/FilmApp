@@ -5,7 +5,6 @@ import android.util.TypedValue
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,14 +16,15 @@ import mikhail.shell.movie.app.viewmodels.FilmViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Downloader
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.async
+import mikhail.shell.movie.app.FilmCatalog
 import mikhail.shell.movie.app.R
 import mikhail.shell.movie.app.fragments.FilmFragment
 import mikhail.shell.movie.app.models.Film
-import mikhail.shell.movie.app.views.FilmCardView
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: AppCompatActivity(), FilmCatalog {
     private lateinit var viewModel: FilmViewModel
     private lateinit var B: MainActivityBinding
     private lateinit var loadingFragment: LoadingFragment
@@ -36,15 +36,8 @@ class MainActivity: AppCompatActivity() {
         loadingFragment = LoadingFragment()
         openFragment(loadingFragment)
         requestAllFilms()
-
-        val picasso = Picasso.Builder(this)
-            .downloader(get<Downloader>())
-            .build()
-        Picasso.setSingletonInstance(picasso)
-
-        setSupportActionBar(B.appBar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayShowCustomEnabled(true)
+        setUpPicasso()
+        setUpSupportActionBar()
     }
     private fun openFragment(fragment: Fragment, addToBackStack: Boolean = true)
     {
@@ -56,43 +49,18 @@ class MainActivity: AppCompatActivity() {
     private fun requestAllFilms()
     {
         lifecycleScope.launch(Dispatchers.IO) {
+            async { viewModel.requestAllFilms() } .await()
             withContext(Dispatchers.Main) {
+                val allFilms = viewModel.getAllFilms()
                 loadingFragment.setProgressBarEnabled(true)
-            }
-            val allFilms = viewModel.requestAllFilms()
-            if (allFilms != null)
-            {
-                val allGenres = viewModel.fetchGenres() as List<String>
-                withContext(Dispatchers.Main)
-                {
-
-                    val filmListFragment = FilmListFragment(allGenres, allFilms){ card ->
-                        val filmCardView = card as FilmCardView
-                        val film = filmCardView.getFilm() as Film
-                        openFragment(FilmFragment(film))
-
-                        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                        B.appBar.navigationIcon?.setTint(resources.getColor(R.color.white))
-                        B.headerTitle.text = film.name
-                    }
+                if (allFilms == null)
+                    displayOnLoadingErrorScreen()
+                else {
+                    val allGenres = viewModel.getGenres() as List<String>
+                    val filmListFragment = FilmListFragment(allGenres, allFilms)
                     openFragment(filmListFragment, false)
                 }
             }
-            else
-            {
-                withContext(Dispatchers.Main) {
-                    loadingFragment.setProgressBarEnabled(false)
-                    loadingFragment.view?.let {
-                        val colorData = TypedValue()
-                        theme.resolveAttribute(androidx.appcompat.R.attr.colorAccent, colorData, true)
-                        val color = colorData.data
-                        Snackbar.make(it, "Ошибка подключения сите",Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Повторить"){ requestAllFilms() }
-                            .setActionTextColor(color)
-                    }?.show()
-                }
-            }
-
         }
     }
 
@@ -111,5 +79,44 @@ class MainActivity: AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         B.headerTitle.text = resources.getString(R.string.film_list_title)
         super.onBackPressed()
+    }
+    private fun setUpPicasso()
+    {
+        val picasso = Picasso.Builder(this)
+            .downloader(get<Downloader>())
+            .build()
+        Picasso.setSingletonInstance(picasso)
+    }
+    private fun setUpSupportActionBar()
+    {
+        setSupportActionBar(B.appBar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+    }
+    private fun setUpFilmToolbar(film: Film)
+    {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        B.appBar.navigationIcon?.setTint(resources.getColor(R.color.white))
+        B.headerTitle.text = film.name
+    }
+    private fun getColorById(colorId: Int) : Int
+    {
+        val colorData = TypedValue()
+        theme.resolveAttribute(colorId, colorData, true)
+        return colorData.data
+    }
+    private fun displayOnLoadingErrorScreen() {
+        loadingFragment.setProgressBarEnabled(false)
+        loadingFragment.view?.let {
+            val color = getColorById(androidx.appcompat.R.attr.colorAccent)
+            Snackbar.make(it, "Ошибка подключения сети",Snackbar.LENGTH_INDEFINITE)
+                .setAction("Повторить"){ requestAllFilms() }
+                .setActionTextColor(color)
+        }?.show()
+    }
+
+    override fun openFilm(film: Film) {
+        openFragment(FilmFragment(film))
+        setUpFilmToolbar(film)
     }
 }

@@ -19,14 +19,13 @@
                 android:paddingVertical="8dp">
 
                 <TextView
+                    style="@style/HeadingStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="9dp"
                     android:text="@string/genres_title"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/black" />
 
                 <RadioGroup
                     android:id="@+id/genres_radio_group"
@@ -42,14 +41,13 @@
                 android:paddingVertical="8dp">
 
                 <TextView
+                    style="@style/HeadingStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="9dp"
+                    android:paddingVertical="10dp"
                     android:text="@string/film_container_title"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/black"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/films_recycler_veiw"

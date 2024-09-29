@@ -19,7 +19,6 @@
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
-            android:label=""
             android:theme="@style/Theme.FilmApp"
             android:configChanges="orientation|screenSize">
 

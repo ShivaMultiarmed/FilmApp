@@ -2,20 +2,19 @@ package mikhail.shell.movie.app.viewmodels
 
 import androidx.lifecycle.ViewModel
 import mikhail.shell.movie.app.models.Film
-import mikhail.shell.movie.app.repositories.FilmRepository
 import mikhail.shell.movie.app.repositories.Repository
 
 class FilmViewModel(private val repository: Repository<Film>): ViewModel() {
     private var films: MutableList<Film>? = null
     private var genres: MutableList<String>? = null
-    suspend fun requestAllFilms() : List<Film>? {
+    suspend fun requestAllFilms() {
         if (films == null)
             films = repository.getAll()
-        return films
     }
-    fun fetchGenres(): List<String>?
+    fun getGenres(): List<String>?
     {
         if (genres == null)
+
         {
             genres = mutableListOf()
             films?.forEach {
@@ -25,10 +24,10 @@ class FilmViewModel(private val repository: Repository<Film>): ViewModel() {
                 }
             }
         }
-        return genres
+        return genres?.sortedWith {g1, g2 -> g1.compareTo(g2)}
     }
-    fun filterFilmByGenre(genre: String) = films
+    fun filterFilmsByGenre(genre: String) = films
         ?.filter { film -> film.genres.contains(genre) }
         ?.sortedWith{ f1, f2 -> f2.name.compareTo(f1.name) }
-    fun getFilmById(id: Long) = films?.find { film -> film.id == id }
+    fun getAllFilms() = films?.sortedWith { f1, f2 -> f1.localized_name.compareTo(f2.localized_name) }?.toList()
 }

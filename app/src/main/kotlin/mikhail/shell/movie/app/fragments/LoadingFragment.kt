@@ -16,7 +16,7 @@ class LoadingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+        progressBar = view.findViewById(R.id.progressBar)
     }
 
     fun setProgressBarEnabled(isEnabled: Boolean) {
